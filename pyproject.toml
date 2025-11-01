@@ -1,0 +1,22 @@
+[project]
+name = "project2-pogozhev-evgenii-dpo-nod"
+version = "0.1.0"
+description = "Second project"
+authors = [
+    {name = "Setrence",email = "Setrence1@yandex.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{include = "src"},]
+
+[tool.poetry.scripts]
+project = "src.primitive_db.main:main"
