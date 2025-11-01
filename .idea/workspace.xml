@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Compleat preparation">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Compleat preparation #2">
+      <change afterPath="$PROJECT_DIR$/src/primitive_db/engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitive_db/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1762014790314</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Compleat preparation #2">
+      <created>1762014926992</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1762014926992</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -102,6 +115,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Compleat preparation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Compleat preparation" />
+    <MESSAGE value="Compleat preparation #2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Compleat preparation #2" />
   </component>
 </project>
