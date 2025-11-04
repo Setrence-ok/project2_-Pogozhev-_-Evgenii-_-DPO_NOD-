@@ -16,7 +16,7 @@ def create_table(metadata, table_name, columns):
     columns.insert(0, id_column)
 
     metadata[table_name] = {
-         'columns': [(col[0], str(col[1])) for col in columns]
+        'columns': [(col[0], str(col[1])) for col in columns]
     }
 
     return metadata
@@ -28,3 +28,11 @@ def drop_table(metadata, table_name):
 
     del metadata[table_name]
     return metadata
+
+
+def list_tables(metadata):
+    if metadata:
+        for name in metadata.keys():
+            print(f"- '{name}'")
+    else:
+        raise ValueError(f"Ошибка: Таблиц в файле не найдено!.")

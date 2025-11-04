@@ -2,7 +2,7 @@
 import prompt
 import shlex
 from .utils import load_metadata, save_metadata
-from .core import create_table, drop_table
+from .core import create_table, drop_table, list_tables
 
 
 def print_help():
@@ -55,6 +55,12 @@ def run():
             except ValueError as ve:
                 print(ve)
 
+        elif command == "list_tables":
+            try:
+                list_tables(metadata)
+            except ValueError as ve:
+                print(ve)
+
         elif command == "drop_table":
             if len(args) < 2:
                 print("Использование: drop_table <table_name>")
@@ -77,4 +83,4 @@ def run():
             break
 
         else:
-            print("Ошибка: Неизвестная команда.")
+            print(f"Ошибка: Функции '{command}' нет. Попробуйте снова!")
