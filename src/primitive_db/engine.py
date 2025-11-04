@@ -2,7 +2,7 @@
 import prompt
 import shlex
 from .utils import load_metadata, save_metadata
-from .core import create_table, drop_table
+from .core import create_table, drop_table, list_tables
 
 
 def print_help():
@@ -52,6 +52,12 @@ def run():
                 save_metadata(filepath, metadata)
                 column_descriptions = ', '.join([f"{col[0]}:{col[1]}" for col in metadata[table_name]['columns']])
                 print(f"Таблица '{table_name}' успешно создана со столбцами: {column_descriptions}")
+            except ValueError as ve:
+                print(ve)
+
+        elif command == "list_tables":
+            try:
+                list_tables(metadata)
             except ValueError as ve:
                 print(ve)
 
