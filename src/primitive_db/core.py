@@ -35,4 +35,4 @@ def list_tables(metadata):
         for name in metadata.keys():
             print(f"- '{name}'")
     else:
-        raise ValueError(f"Ошибка: Таблиц в файле не найдено!.")
+        raise ValueError("Ошибка: Таблиц в файле не найдено!")

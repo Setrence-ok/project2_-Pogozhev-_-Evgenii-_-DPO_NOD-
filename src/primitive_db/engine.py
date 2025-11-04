@@ -1,8 +1,8 @@
 # src/primitive_db/engine.py
-import prompt
 import shlex
-from .utils import load_metadata, save_metadata
+
 from .core import create_table, drop_table, list_tables
+from .utils import load_metadata, save_metadata
 
 
 def print_help():
