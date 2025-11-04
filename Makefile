@@ -15,3 +15,6 @@ package-install:
 
 lint:
 	poetry run ruff check .
+
+source:
+	source /home/evgenii/PycharmProjects/project2_-Pogozhev-_-Evgenii-_-DPO_NOD-/.venv/bin/activate
