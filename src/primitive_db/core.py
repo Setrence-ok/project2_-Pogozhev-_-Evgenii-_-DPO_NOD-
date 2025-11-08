@@ -24,12 +24,13 @@ def create_table(metadata, table_name, columns):
     return metadata
 
 
-def drop_table(metadata, table_name):
-    if table_name not in metadata:
-        raise ValueError(f"Ошибка: Таблица '{table_name}' не существует.")
+def drop_table(table_name):
+    filepath = f'data/{table_name}.json'
+    if not os.path.exists(filepath):
+        raise ValueError(f"Ошибка: Таблица '{table_name}' не существует")
 
-    del metadata[table_name]
-    return metadata
+    os.remove(filepath)
+    return
 
 
 def list_tables(metadata):

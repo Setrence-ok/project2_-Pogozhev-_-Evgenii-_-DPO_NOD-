@@ -68,8 +68,7 @@ def run():
             table_name = args[1]
 
             try:
-                metadata = drop_table(metadata, table_name)
-                save_metadata(filepath, metadata)
+                drop_table(table_name)
                 print(f"Таблица '{table_name}' успешно удалена.")
             except ValueError as ve:
                 print(ve)
