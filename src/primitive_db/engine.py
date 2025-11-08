@@ -55,8 +55,9 @@ def run():
                 print(ve)
 
         elif command == "list_tables":
+            direct = "data"
             try:
-                list_tables(metadata)
+                list_tables(direct)
             except ValueError as ve:
                 print(ve)
 

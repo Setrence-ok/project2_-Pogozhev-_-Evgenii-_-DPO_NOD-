@@ -33,9 +33,11 @@ def drop_table(table_name):
     return
 
 
-def list_tables(metadata):
-    if metadata:
-        for name in metadata.keys():
-            print(f"- '{name}'")
+def list_tables(directory):
+    files = os.listdir(directory)
+    if files:
+        for filename in files:
+            filename = os.path.splitext(filename)[0]
+            print(f"- '{filename}'")
     else:
         raise ValueError("Ошибка: Таблиц в файле не найдено!")
