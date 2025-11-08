@@ -4,8 +4,8 @@ import os
 
 def create_table(metadata, table_name, columns):
     TYPES = {'int': int, 'str': str, 'bool': bool}
-    filepath = f'data/{table_name}.json'
-    if os.path.exists(filepath):
+    FILEPATH = f'data/{table_name}.json'
+    if os.path.exists(FILEPATH):
         raise ValueError(f"Ошибка: Таблица '{table_name}' уже существует")
     for column in columns:
         if not isinstance(column, tuple) or len(column) != 2:
@@ -24,16 +24,16 @@ def create_table(metadata, table_name, columns):
     return metadata
 
 
-def drop_table(table_name):
-    filepath = f'data/{table_name}.json'
-    if not os.path.exists(filepath):
+def drop_table(metadata, table_name):
+    FILEPATH = f'data/{table_name}.json'
+    if not os.path.exists(FILEPATH):
         raise ValueError(f"Ошибка: Таблица '{table_name}' не существует")
+    del metadata[table_name]
+    os.remove(FILEPATH)
+    return metadata
 
-    os.remove(filepath)
-    return
 
-
-def list_tables(directory):
+def list_tables(metadata, directory):
     files = os.listdir(directory)
     if files:
         for filename in files:

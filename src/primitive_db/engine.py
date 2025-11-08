@@ -20,6 +20,8 @@ def print_help():
 
 
 def run():
+    filepath = 'db_meta.json'
+    metadata = load_metadata(filepath)
 
     while True:
         user_input = input("Введите команду: ")
@@ -46,9 +48,10 @@ def run():
                 columns.append((col_parts[0], col_parts[1]))
 
             try:
-                filepath = load_table_data(f'data/{table_name}.json')
-                metadata = create_table(filepath, table_name, columns)
+                filepath2 = load_table_data(f'data/{table_name}.json')
+                metadata = create_table(filepath2, table_name, columns)
                 save_table_data(table_name, metadata)
+                save_metadata(filepath, metadata)
                 column_descriptions = ', '.join([f"{col[0]}:{col[1]}" for col in metadata[table_name]['columns']])
                 print(f"Таблица '{table_name}' успешно создана со столбцами: {column_descriptions}")
             except ValueError as ve:
@@ -57,7 +60,7 @@ def run():
         elif command == "list_tables":
             direct = "data"
             try:
-                list_tables(direct)
+                list_tables(metadata, direct)
             except ValueError as ve:
                 print(ve)
 
@@ -69,7 +72,8 @@ def run():
             table_name = args[1]
 
             try:
-                drop_table(table_name)
+                metadata = drop_table(metadata, table_name)
+                save_metadata(filepath, metadata)
                 print(f"Таблица '{table_name}' успешно удалена.")
             except ValueError as ve:
                 print(ve)
