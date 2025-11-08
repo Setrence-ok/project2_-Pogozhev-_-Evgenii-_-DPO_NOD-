@@ -1,6 +1,7 @@
 # src/primitive_db/utils.py
 
 import json
+import os
 
 
 def load_metadata(filepath):
@@ -12,5 +13,25 @@ def load_metadata(filepath):
 
 
 def save_metadata(filepath, data):
+    with open(filepath, 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False, indent=4)
+
+
+def load_table_data(table_name):
+    filepath = f'data/{table_name}.json'
+    if not os.path.exists(filepath):
+        return []
+
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except json.JSONDecodeError:
+        print(f"Ошибка: Файл '{filepath}' содержит некорректный JSON.")
+        return []
+
+
+def save_table_data(table_name, data):
+    filepath = f'data/{table_name}.json'
+
     with open(filepath, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
