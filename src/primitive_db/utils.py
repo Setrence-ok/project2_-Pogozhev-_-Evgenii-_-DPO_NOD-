@@ -20,14 +20,14 @@ def save_metadata(filepath, data):
 def load_table_data(table_name):
     filepath = f'data/{table_name}.json'
     if not os.path.exists(filepath):
-        return []
+        return {}
 
     try:
         with open(filepath, 'r', encoding='utf-8') as file:
             return json.load(file)
     except json.JSONDecodeError:
         print(f"Ошибка: Файл '{filepath}' содержит некорректный JSON.")
-        return []
+        return {}
 
 
 def save_table_data(table_name, data):

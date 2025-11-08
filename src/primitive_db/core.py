@@ -1,10 +1,12 @@
 # src/primitive_db/core.py
+import os
+
 
 def create_table(metadata, table_name, columns):
     TYPES = {'int': int, 'str': str, 'bool': bool}
-    if table_name in metadata:
+    filepath = f'data/{table_name}.json'
+    if os.path.exists(filepath):
         raise ValueError(f"Ошибка: Таблица '{table_name}' уже существует")
-
     for column in columns:
         if not isinstance(column, tuple) or len(column) != 2:
             raise ValueError("Каждый столбец должен быть кортежем (имя, тип).")

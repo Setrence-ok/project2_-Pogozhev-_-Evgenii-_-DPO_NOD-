@@ -1,1 +1,54 @@
-{}
+{
+    "user": {
+        "columns": [
+            [
+                "ID",
+                "int"
+            ],
+            [
+                "dsfsf",
+                "int"
+            ],
+            [
+                "dsfsdfs",
+                "str"
+            ]
+        ]
+    },
+    "users": {
+        "columns": [
+            [
+                "ID",
+                "int"
+            ],
+            [
+                "dgdfg",
+                "int"
+            ],
+            [
+                "dfgdg",
+                "str"
+            ]
+        ]
+    },
+    "table": {
+        "columns": [
+            [
+                "ID",
+                "int"
+            ],
+            [
+                "ssdfs",
+                "int"
+            ],
+            [
+                "fdgd",
+                "str"
+            ],
+            [
+                "fdgddfg",
+                "bool"
+            ]
+        ]
+    }
+}

@@ -2,7 +2,7 @@
 import shlex
 
 from .core import create_table, drop_table, list_tables
-from .utils import load_metadata, save_metadata
+from .utils import load_metadata, save_metadata, load_table_data, save_table_data
 
 
 def print_help():
@@ -20,8 +20,6 @@ def print_help():
 
 
 def run():
-    filepath = 'db_meta.json'
-    metadata = load_metadata(filepath)
 
     while True:
         user_input = input("Введите команду: ")
@@ -48,8 +46,9 @@ def run():
                 columns.append((col_parts[0], col_parts[1]))
 
             try:
-                metadata = create_table(metadata, table_name, columns)
-                save_metadata(filepath, metadata)
+                filepath = load_table_data(f'data/{table_name}.json')
+                metadata = create_table(filepath, table_name, columns)
+                save_table_data(table_name, metadata)
                 column_descriptions = ', '.join([f"{col[0]}:{col[1]}" for col in metadata[table_name]['columns']])
                 print(f"Таблица '{table_name}' успешно создана со столбцами: {column_descriptions}")
             except ValueError as ve:
