@@ -1,9 +1,10 @@
 # src/primitive_db/engine.py
 import shlex
 import sys
-from .core import create_table, drop_table, list_tables, insert, delete
+from .core import create_table, drop_table, list_tables, insert, delete, select, update
 from .utils import load_metadata, save_metadata, load_table_data, save_table_data
 from .parser import parse_where_clause, parse_set_clause, parse_values
+from prettytable import PrettyTable
 
 
 def print_help():
@@ -18,6 +19,8 @@ def print_help():
     print("\nОбщие команды:")
     print("<command> exit - выход из программы")
     print("<command> help - справочная информация\n")
+
+
 
 
 def run():
@@ -116,10 +119,86 @@ def run():
                 print(ve)
 
         elif command == "select":
+            """Обрабатывает команду SELECT"""
+            if len(args) < 2 or args[1] != "from":
+                print("Ошибка: Неверный формат команды SELECT. Используйте: select from <таблица> [where <условие>]")
+                continue
 
+            table_name = args[2]
+            where_clause = None
+
+            if "where" in args:
+                where_index = args.index("where")
+                where_condition = " ".join(args[where_index + 1:])
+                where_clause = parse_where_clause(where_condition)
+
+            try:
+                # Загружаем данные
+                table_data = load_table_data(table_name)
+
+                # Выбираем записи
+                result_data = select(table_data, where_clause)
+
+                if not result_data:
+                    print("Записи не найдены.")
+                    return
+
+                # Сортируем поля: ID первый, остальные по порядку из метаданных
+                metadata = load_metadata()
+                if table_name in metadata:
+                    # Берем порядок из метаданных
+                    all_fields = list(metadata[table_name].keys())
+                else:
+                    # Если нет метаданных, хотя бы ID ставим первым
+                    all_fields = list(result_data[0].keys())
+                    if "ID" in all_fields:
+                        all_fields.remove("ID")
+                        all_fields = ["ID"] + all_fields
+
+                # Красивый вывод через prettytable
+                table = PrettyTable()
+                table.field_names = all_fields
+
+                for record in result_data:
+                    row = [record.get(field, "") for field in all_fields]
+                    table.add_row(row)
+
+                print(table)
+
+            except ValueError as ve:
+                print(ve)
 
         elif command == "update":
+            """Обрабатывает команду UPDATE"""
+            if len(args) < 5 or args[2] != "set" or "where" not in args:
+                print("Ошибка: Неверный формат команды UPDATE. Используйте: update <таблица> set <присваивания> where <условие>")
+                return
 
+            table_name = args[1]
+            set_index = args.index("set")
+            where_index = args.index("where")
+
+            set_condition = " ".join(args[set_index + 1:where_index])
+            where_condition = " ".join(args[where_index + 1:])
+
+            try:
+                # Загружаем данные
+                table_data = load_table_data(table_name)
+
+                # Парсим условия
+                set_clause = parse_set_clause(set_condition)
+                where_clause = parse_where_clause(where_condition)
+
+                # Обновляем данные
+                updated_data, updated_count = update(table_data, set_clause, where_clause)
+
+                # Сохраняем изменения
+                save_table_data(table_name, updated_data)
+
+                print(f"Запись(и) в таблице '{table_name}' успешно обновлена(ы). Обновлено записей: {updated_count}")
+
+            except ValueError as ve:
+                print(ve)
 
         elif command == "delete":
             """Обрабатывает команду DELETE"""
