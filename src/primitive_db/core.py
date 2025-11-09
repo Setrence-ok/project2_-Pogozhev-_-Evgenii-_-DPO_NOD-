@@ -36,13 +36,14 @@ def create_table(metadata, table_name, columns):
 
 
 @handle_db_errors
-@confirm_action("удаление таблицы")
+@confirm_action("удаление таблицы", None)
 def drop_table(metadata, table_name):
     FILEPATH = f'data/{table_name}.json'
     if not os.path.exists(FILEPATH):
         raise ValueError(f"Ошибка: Таблица '{table_name}' не существует")
     del metadata[table_name]
     os.remove(FILEPATH)
+    print(f"Таблица '{table_name}' успешно удалена.")
     return metadata
 
 
@@ -147,7 +148,7 @@ def update(table_data, set_clause, where_clause):
 
 
 @handle_db_errors
-@confirm_action("удаление записи")
+@confirm_action("удаление записи", return_=(None, 0))
 def delete(table_data, where_clause):
     if where_clause is None:
         return table_data, 0

@@ -69,8 +69,8 @@ def run_drop_table(metadata, args):
 
     try:
         metadata = drop_table(metadata, table_name)
-        save_metadata(metadata)
-        print(f"Таблица '{table_name}' успешно удалена.")
+        if metadata is not None:
+            save_metadata(metadata)
     except ValueError as ve:
         print(ve)
 
@@ -128,12 +128,11 @@ def run_select(args, cache):
 
     try:
         table_data = load_table_data(table_name)
-        cache_key = f"select_{table_name}_{str(where_clause)}"
+        cache_key = f"select.{table_name}.{str(where_clause)}"
 
         def get_selected_data():
             return select(table_data, where_clause)
-
-        result_data = cache(cache_key, get_selected_data())
+        result_data = cache(cache_key, get_selected_data)
 
         if not result_data:
             print("Записи не найдены.")
@@ -141,7 +140,7 @@ def run_select(args, cache):
 
         metadata = load_metadata()
         if table_name in metadata:
-            all_fields = list(metadata[table_name].keys())
+            all_fields = list(metadata[table_name].get('columns', []))
         else:
             all_fields = list(result_data[0].keys())
             if "ID" in all_fields:
@@ -203,11 +202,13 @@ def run_delete(args):
 
         where_clause = parse_where_clause(where_condition)
 
-        new_data, deleted_count = delete(table_data, where_clause)
-
-        save_table_data(table_name, new_data)
-
-        print(f"Запись(и) успешно удалена(ы) из таблицы '{table_name}'. Удалено записей: {deleted_count}")
+        result = delete(table_data, where_clause)
+        if result is None:
+            return
+        new_data, deleted_count = result
+        if deleted_count > 0:
+            save_table_data(table_name, new_data)
+            print(f"Запись(и) успешно удалена(ы) из таблицы '{table_name}'. Удалено записей: {deleted_count}")
 
     except ValueError as ve:
         print(ve)

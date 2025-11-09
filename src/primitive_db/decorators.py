@@ -25,7 +25,7 @@ def handle_db_errors(func):
     return wrapper
 
 
-def confirm_action(action_name):
+def confirm_action(action_name, return_):
     """
     Декоратор для подтверждения опасных операций
     """
@@ -36,7 +36,8 @@ def confirm_action(action_name):
             response = input(f'Вы уверены, что хотите выполнить "{action_name}"? [y/n]: ')
             if response.lower() != 'y':
                 print("Операция отменена.")
-                return None
+                return return_
+
             return func(*args, **kwargs)
 
         return wrapper
@@ -55,7 +56,7 @@ def log_time(func):
         result = func(*args, **kwargs)
         end_time = time.monotonic()
         execution_time = end_time - start_time
-        print(f'Функция "{func._name_}" выполнилась за {execution_time:.3f} секунд')
+        print(f'Функция "{func.__name__}" выполнилась за {execution_time:.6f} секунд')
         return result
 
     return wrapper
