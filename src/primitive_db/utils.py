@@ -3,35 +3,66 @@
 import json
 import os
 
-
-def load_metadata(filepath):
-    try:
-        with open(filepath, 'r', encoding='utf-8') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return {}
+DATA_DIR = "data"
 
 
-def save_metadata(filepath, data):
-    with open(filepath, 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+def ensure_data_dir():
+    """Создает директорию data, если она не существует"""
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
 
 
 def load_table_data(table_name):
-    FILEPATH = f'data/{table_name}.json'
-    if not os.path.exists(FILEPATH):
-        return {}
+    """
+    Загружает данные таблицы из JSON-файла
+    """
+    ensure_data_dir()
+    filename = os.path.join(DATA_DIR, f"{table_name}.json")
+
+    if not os.path.exists(filename):
+        return []
 
     try:
-        with open(FILEPATH, 'r', encoding='utf-8') as file:
-            return json.load(file)
-    except json.JSONDecodeError:
-        print(f"Ошибка: Файл '{FILEPATH}' содержит некорректный JSON.")
-        return {}
+        with open(filename, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return []
 
 
 def save_table_data(table_name, data):
-    FILEPATH = f'data/{table_name}.json'
+    """
+    Сохраняет данные таблицы в JSON-файл
+    """
+    ensure_data_dir()
+    filename = os.path.join(DATA_DIR, f"{table_name}.json")
 
-    with open(FILEPATH, 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+def load_metadata():
+    """
+    Загружает метаданные таблиц
+    """
+    ensure_data_dir()
+    filename = os.path.join(DATA_DIR, "metadata.json")
+
+    if not os.path.exists(filename):
+        return {}
+
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return {}
+
+
+def save_metadata(metadata):
+    """
+    Сохраняет метаданные таблиц
+    """
+    ensure_data_dir()
+    filename = os.path.join(DATA_DIR, "metadata.json")
+
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(metadata, f, indent=2, ensure_ascii=False)

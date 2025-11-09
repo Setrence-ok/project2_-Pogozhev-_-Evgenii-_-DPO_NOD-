@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Реализовал вывод таблиц по названию">
+    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Совмести работу metadata и data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db_meta.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_meta.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/core.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/engine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitive_db/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +165,14 @@
       <option name="project" value="LOCAL" />
       <updated>1762603429483</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Совмести работу metadata и data">
+      <created>1762607336375</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1762607336375</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,6 +216,7 @@
     <MESSAGE value="Реализовал создание таблиц в отдельный файл .json" />
     <MESSAGE value="Реализовал удаление файла .json по названию таблицы" />
     <MESSAGE value="Реализовал вывод таблиц по названию" />
-    <option name="LAST_COMMIT_MESSAGE" value="Реализовал вывод таблиц по названию" />
+    <MESSAGE value="Совмести работу metadata и data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Совмести работу metadata и data" />
   </component>
 </project>

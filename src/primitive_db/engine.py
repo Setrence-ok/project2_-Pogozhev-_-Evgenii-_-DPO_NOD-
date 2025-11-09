@@ -1,7 +1,7 @@
 # src/primitive_db/engine.py
 import shlex
 
-from .core import create_table, drop_table, list_tables
+from .core import create_table, drop_table, list_tables, insert
 from .utils import load_metadata, save_metadata, load_table_data, save_table_data
 
 
@@ -60,7 +60,7 @@ def run():
         elif command == "list_tables":
             direct = "data"
             try:
-                list_tables(metadata, direct)
+                list_tables(direct)
             except ValueError as ve:
                 print(ve)
 
@@ -75,6 +75,29 @@ def run():
                 metadata = drop_table(metadata, table_name)
                 save_metadata(filepath, metadata)
                 print(f"Таблица '{table_name}' успешно удалена.")
+            except ValueError as ve:
+                print(ve)
+        elif command == "insert":
+            if len(args) < 4 or args[3] != "values":
+                print("Использование: insert into <имя_таблицы> values (<значение1>, <значение2>, ...)")
+                continue
+            try:
+                table_name = args[2]
+                values = args[4:]
+                values = [v.strip(', ') for v in values]
+                processed_values = []
+                for value in values:
+                    if value.isdigit():
+                        processed_values.append(int(value))
+                    elif value.lower() == 'true':
+                        processed_values.append(True)
+                    elif value.lower() == 'false':
+                        processed_values.append(False)
+                    else:
+                        processed_values.append(value.strip("'"))
+                print("Полученные значения:", values)
+                print(values)
+                insert(metadata, table_name, processed_values)
             except ValueError as ve:
                 print(ve)
 
