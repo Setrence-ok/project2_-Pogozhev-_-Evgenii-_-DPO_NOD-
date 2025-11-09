@@ -1,7 +1,7 @@
 # src/primitive_db/engine.py
 import shlex
 import sys
-from .core import create_table, drop_table, list_tables, insert
+from .core import create_table, drop_table, list_tables, insert, delete
 from .utils import load_metadata, save_metadata, load_table_data, save_table_data
 from .parser import parse_where_clause, parse_set_clause, parse_values
 
@@ -122,7 +122,31 @@ def run():
 
 
         elif command == "delete":
+            """Обрабатывает команду DELETE"""
+            if len(args) < 4 or args[1] != "from" or args[3] != "where":
+                print("Ошибка: Неверный формат команды DELETE. Используйте: delete from <таблица> where <условие>")
+                return
 
+            table_name = args[2]
+            where_condition = " ".join(args[4:])
+
+            try:
+                # Загружаем данные
+                table_data = load_table_data(table_name)
+
+                # Парсим условие
+                where_clause = parse_where_clause(where_condition)
+
+                # Удаляем записи
+                new_data, deleted_count = delete(table_data, where_clause)
+
+                # Сохраняем изменения
+                save_table_data(table_name, new_data)
+
+                print(f"Запись(и) успешно удалена(ы) из таблицы '{table_name}'. Удалено записей: {deleted_count}")
+
+            except ValueError as ve:
+                print(ve)
 
         elif command == "help":
             print_help()
