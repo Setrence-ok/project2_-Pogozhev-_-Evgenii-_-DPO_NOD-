@@ -1,6 +1,6 @@
 # src/primitive_db/engine.py
 import shlex
-import sys
+from .decorators import create_cacher, log_time
 from .core import create_table, drop_table, list_tables, insert, delete, select, update
 from .utils import load_metadata, save_metadata, load_table_data, save_table_data
 from .parser import parse_where_clause, parse_set_clause, parse_values
@@ -75,6 +75,7 @@ def run_drop_table(metadata, args):
         print(ve)
 
 
+@log_time
 def run_insert(metadata, args):
     if len(args) < 4 or args[1] != "into" or args[3] != "values":
         print("Ошибка: Неверный формат команды INSERT. Используйте: insert into <таблица> values (<значения>)")
@@ -112,7 +113,7 @@ def run_insert(metadata, args):
         print(ve)
 
 
-def run_select(args):
+def run_select(args, cache):
     if len(args) < 2 or args[1] != "from":
         print("Ошибка: Неверный формат команды SELECT. Используйте: select from <таблица> [where <условие>]")
         return
@@ -127,7 +128,12 @@ def run_select(args):
 
     try:
         table_data = load_table_data(table_name)
-        result_data = select(table_data, where_clause)
+        cache_key = f"select_{table_name}_{str(where_clause)}"
+
+        def get_selected_data():
+            return select(table_data, where_clause)
+
+        result_data = cache(cache_key, get_selected_data())
 
         if not result_data:
             print("Записи не найдены.")
@@ -242,6 +248,7 @@ def run_info(args):
 
 def run():
     metadata = load_metadata()
+    cache = create_cacher()
 
     while True:
         user_input = input("Введите команду: ")
@@ -265,7 +272,7 @@ def run():
             run_insert(metadata, args)
 
         elif command == "select":
-            run_select(args)
+            run_select(args, cache)
 
         elif command == "update":
             run_update(args)

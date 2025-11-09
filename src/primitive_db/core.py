@@ -1,12 +1,10 @@
 # src/primitive_db/core.py
 import os
 from .utils import load_table_data, save_table_data, load_metadata
+from .decorators import handle_db_errors, log_time, confirm_action
 
 
 def create_table(metadata, table_name, columns):
-    """
-    Создает новую таблицу
-    """
     TYPES = {'int': 'integer', 'str': 'text', 'bool': 'boolean'}
     FILEPATH = f'data/{table_name}.json'
 
@@ -17,7 +15,6 @@ def create_table(metadata, table_name, columns):
     if os.path.exists(FILEPATH):
         raise ValueError(f"Файл для таблицы '{table_name}' уже существует")
 
-    # Проверяем столбцы
     table_schema = {"ID": "integer"}  # ID всегда первый столбец
 
     for column in columns:
@@ -31,15 +28,15 @@ def create_table(metadata, table_name, columns):
 
         table_schema[column_name] = TYPES[column_type]
 
-    # Добавляем таблицу в метаданные
     metadata[table_name] = table_schema
 
-    # Создаем пустой файл для данных таблицы
     save_table_data(table_name, [])
 
     return metadata
 
 
+@handle_db_errors
+@confirm_action("удаление таблицы")
 def drop_table(metadata, table_name):
     FILEPATH = f'data/{table_name}.json'
     if not os.path.exists(FILEPATH):
@@ -60,30 +57,23 @@ def list_tables(directory):
         raise ValueError("Ошибка: Таблиц в файле не найдено!")
 
 
+@handle_db_errors
 def insert(metadata, table_name, values):
-    """
-    Вставляет новую запись в таблицу
-    """
-    # Проверяем существование таблицы
     if table_name not in metadata:
         raise ValueError(f"Таблица '{table_name}' не существует")
 
     table_schema = metadata[table_name]
-    # Получаем все столбцы кроме ID
     columns = [col for col in table_schema.keys() if col != "ID"]
 
-    # Проверяем количество значений
     if len(values) != len(columns):
         raise ValueError(
             f"Неверное количество значений. Ожидается {len(columns)} ({', '.join(columns)}), получено {len(values)}")
 
-    # Валидируем типы данных
     validated_values = []
     for i, col_name in enumerate(columns):
         expected_type = table_schema[col_name]
         value = values[i]
 
-        # Валидация типов
         if expected_type == "integer":
             try:
                 if isinstance(value, str):
@@ -109,18 +99,16 @@ def insert(metadata, table_name, values):
 
         validated_values.append(value)
 
-    # Создаем новую запись с ID на первом месте
-    new_record = {"ID": None}  # ID будет установлен позже
+    new_record = {"ID": None}
     for i, col_name in enumerate(columns):
         new_record[col_name] = validated_values[i]
 
     return new_record
 
 
+@handle_db_errors
+@log_time
 def select(table_data, where_clause=None):
-    """
-    Выбирает записи из таблицы
-    """
     if where_clause is None:
         return table_data
 
@@ -138,10 +126,8 @@ def select(table_data, where_clause=None):
     return filtered_data
 
 
+@handle_db_errors
 def update(table_data, set_clause, where_clause):
-    """
-    Обновляет записи в таблице
-    """
     updated_count = 0
 
     for record in table_data:
@@ -160,10 +146,9 @@ def update(table_data, set_clause, where_clause):
     return table_data, updated_count
 
 
+@handle_db_errors
+@confirm_action("удаление записи")
 def delete(table_data, where_clause):
-    """
-    Удаляет записи из таблицы
-    """
     if where_clause is None:
         return table_data, 0
 
