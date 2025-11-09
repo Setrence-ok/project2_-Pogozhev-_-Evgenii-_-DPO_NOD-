@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Finish Database without README">
+    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="End with functionals">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_meta.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_meta.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_meta.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0-py3-none-any.whl" beforeDir="false" afterPath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0-py3-none-any.whl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0.tar.gz" beforeDir="false" afterPath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0.tar.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/core.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/engine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitive_db/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +139,77 @@
       <option name="project" value="LOCAL" />
       <updated>1762272829560</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Add load_table_data and save_table_data">
+      <created>1762592002619</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1762592002619</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Реализовал создание таблиц в отдельный файл .json">
+      <created>1762599636157</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1762599636157</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Реализовал удаление файла .json по названию таблицы">
+      <created>1762600355096</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1762600355096</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Реализовал вывод таблиц по названию">
+      <created>1762603429483</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1762603429483</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Совмести работу metadata и data">
+      <created>1762607336375</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1762607336375</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Add parser.py and update utils.py">
+      <created>1762680248965</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1762680248965</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add functions in core and update create table and insert in engine">
+      <created>1762696779652</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1762696779652</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add delete in engine">
+      <created>1762697339801</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1762697339801</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Update and tasted, all good">
+      <created>1762698508246</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1762698508246</updated>
+    </task>
+    <task id="LOCAL-00017" summary="End with functionals">
+      <created>1762699421159</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1762699421159</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -151,6 +218,11 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -176,6 +248,17 @@
     <MESSAGE value="Database" />
     <MESSAGE value="Finish Database" />
     <MESSAGE value="Finish Database without README" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finish Database without README" />
+    <MESSAGE value="Finish Database without README #2" />
+    <MESSAGE value="Add load_table_data and save_table_data" />
+    <MESSAGE value="Реализовал создание таблиц в отдельный файл .json" />
+    <MESSAGE value="Реализовал удаление файла .json по названию таблицы" />
+    <MESSAGE value="Реализовал вывод таблиц по названию" />
+    <MESSAGE value="Совмести работу metadata и data" />
+    <MESSAGE value="Add parser.py and update utils.py" />
+    <MESSAGE value="Add functions in core and update create table and insert in engine" />
+    <MESSAGE value="Add delete in engine" />
+    <MESSAGE value="Update and tasted, all good" />
+    <MESSAGE value="End with functionals" />
+    <option name="LAST_COMMIT_MESSAGE" value="End with functionals" />
   </component>
 </project>
