@@ -15,12 +15,17 @@ def print_help():
     print("<command> create_table <имя_таблицы> <столбец1:тип> .. - создать таблицу")
     print("<command> list_tables - показать список всех таблиц")
     print("<command> drop_table <имя_таблицы> - удалить таблицу")
+    print("<command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) - создать запись.")
+    print("<command> select from <имя_таблицы> where <столбец> = <значение> - прочитать записи по условию.")
+    print("<command> select from <имя_таблицы> - прочитать все записи.")
+    print("<command> update <имя_таблицы> set <столбец1> = <новое_значение1> "
+          "where <столбец_условия> = <значение_условия> - обновить запись.")
+    print("<command> delete from <имя_таблицы> where <столбец> = <значение> - удалить запись.")
+    print("<command> info <имя_таблицы> - вывести информацию о таблице.")
 
     print("\nОбщие команды:")
     print("<command> exit - выход из программы")
     print("<command> help - справочная информация\n")
-
-
 
 
 def run():
@@ -171,7 +176,8 @@ def run():
         elif command == "update":
             """Обрабатывает команду UPDATE"""
             if len(args) < 5 or args[2] != "set" or "where" not in args:
-                print("Ошибка: Неверный формат команды UPDATE. Используйте: update <таблица> set <присваивания> where <условие>")
+                print(
+                    "Ошибка: Неверный формат команды UPDATE. Используйте: update <таблица> set <присваивания> where <условие>")
                 return
 
             table_name = args[1]
@@ -223,6 +229,38 @@ def run():
                 save_table_data(table_name, new_data)
 
                 print(f"Запись(и) успешно удалена(ы) из таблицы '{table_name}'. Удалено записей: {deleted_count}")
+
+            except ValueError as ve:
+                print(ve)
+        elif command == "info":
+            """Обрабатывает команду INFO"""
+            if len(args) < 1:
+                print("Ошибка: Укажите имя таблицы. Используйте: info <таблица>")
+                continue
+
+            table_name = args[1]
+
+            try:
+                metadata = load_metadata()
+
+                if table_name not in metadata:
+                    print(f"Ошибка: Таблица '{table_name}' не существует")
+                    continue
+
+                table_schema = metadata[table_name]
+                table_data = load_table_data(table_name)
+
+                print(f"Информация о таблице '{table_name}':")
+                print(f"Количество записей: {len(table_data)}")
+                print("Структура таблицы:")
+
+                schema_table = PrettyTable()
+                schema_table.field_names = ["Столбец", "Тип данных"]
+
+                for column, data_type in table_schema.items():
+                    schema_table.add_row([column, data_type])
+
+                print(schema_table)
 
             except ValueError as ve:
                 print(ve)
