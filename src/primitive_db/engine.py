@@ -1,8 +1,9 @@
 # src/primitive_db/engine.py
 import shlex
-
+import sys
 from .core import create_table, drop_table, list_tables, insert
 from .utils import load_metadata, save_metadata, load_table_data, save_table_data
+from .parser import parse_where_clause, parse_set_clause, parse_values
 
 
 def print_help():
@@ -20,8 +21,7 @@ def print_help():
 
 
 def run():
-    filepath = 'db_meta.json'
-    metadata = load_metadata(filepath)
+    metadata = load_metadata()
 
     while True:
         user_input = input("Введите команду: ")
@@ -29,7 +29,7 @@ def run():
 
         if not args:
             continue
-
+        args = shlex.split(user_input)
         command = args[0]
 
         if command == "create_table":
@@ -44,15 +44,13 @@ def run():
                 col_parts = column.split(':')
                 if len(col_parts) != 2:
                     print(f"Ошибка в столбце '{column}'. Формат: <column_name>:<type>")
-                    break
+                    continue
                 columns.append((col_parts[0], col_parts[1]))
 
             try:
-                filepath2 = load_table_data(f'data/{table_name}.json')
-                metadata = create_table(filepath2, table_name, columns)
-                save_table_data(table_name, metadata)
-                save_metadata(filepath, metadata)
-                column_descriptions = ', '.join([f"{col[0]}:{col[1]}" for col in metadata[table_name]['columns']])
+                updated_metadata = create_table(metadata, table_name, columns)
+                save_metadata(updated_metadata)
+                column_descriptions = ', '.join([f"{col[0]}:{col[1]}" for col in columns])
                 print(f"Таблица '{table_name}' успешно создана со столбцами: {column_descriptions}")
             except ValueError as ve:
                 print(ve)
@@ -73,33 +71,58 @@ def run():
 
             try:
                 metadata = drop_table(metadata, table_name)
-                save_metadata(filepath, metadata)
+                save_metadata(metadata)
                 print(f"Таблица '{table_name}' успешно удалена.")
             except ValueError as ve:
                 print(ve)
         elif command == "insert":
-            if len(args) < 4 or args[3] != "values":
-                print("Использование: insert into <имя_таблицы> values (<значение1>, <значение2>, ...)")
+            """Обрабатывает команду INSERT"""
+            if len(args) < 4 or args[1] != "into" or args[3] != "values":
+                print("Ошибка: Неверный формат команды INSERT. Используйте: insert into <таблица> values (<значения>)")
                 continue
+
+            table_name = args[2]
+            values_str = " ".join(args[4:])
+
             try:
-                table_name = args[2]
-                values = args[4:]
-                values = [v.strip(', ') for v in values]
-                processed_values = []
-                for value in values:
-                    if value.isdigit():
-                        processed_values.append(int(value))
-                    elif value.lower() == 'true':
-                        processed_values.append(True)
-                    elif value.lower() == 'false':
-                        processed_values.append(False)
+                values = parse_values(values_str)
+                table_data = load_table_data(table_name)
+                metadata = load_metadata()
+
+                new_record = insert(metadata, table_name, values)
+
+                # Генерируем ID
+                if table_data:
+                    # Фильтруем записи с None и извлекаем ID
+                    valid_ids = []
+                    for record in table_data:
+                        if record is not None and isinstance(record, dict) and "ID" in record:
+                            valid_ids.append(record["ID"])
+
+                    if valid_ids:
+                        max_id = max(valid_ids)
+                        new_record["ID"] = max_id + 1
                     else:
-                        processed_values.append(value.strip("'"))
-                print("Полученные значения:", values)
-                print(values)
-                insert(metadata, table_name, processed_values)
+                        new_record["ID"] = 1
+                else:
+                    new_record["ID"] = 1
+
+                table_data.append(new_record)
+                save_table_data(table_name, table_data)
+
+                print(f'Запись с ID={new_record["ID"]} успешно добавлена в таблицу "{table_name}".')
+
             except ValueError as ve:
                 print(ve)
+
+        elif command == "select":
+
+
+        elif command == "update":
+
+
+        elif command == "delete":
+
 
         elif command == "help":
             print_help()

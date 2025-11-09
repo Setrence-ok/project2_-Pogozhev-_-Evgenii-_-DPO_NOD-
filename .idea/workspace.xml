@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Совмести работу metadata и data">
+    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Add parser.py and update utils.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_meta.json" beforeDir="false" afterPath="$PROJECT_DIR$/db_meta.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/core.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/engine.py" afterDir="false" />
     </list>
@@ -172,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1762607336375</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add parser.py and update utils.py">
+      <created>1762680248965</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1762680248965</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -217,6 +223,7 @@
     <MESSAGE value="Реализовал удаление файла .json по названию таблицы" />
     <MESSAGE value="Реализовал вывод таблиц по названию" />
     <MESSAGE value="Совмести работу metadata и data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Совмести работу metadata и data" />
+    <MESSAGE value="Add parser.py and update utils.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add parser.py and update utils.py" />
   </component>
 </project>
