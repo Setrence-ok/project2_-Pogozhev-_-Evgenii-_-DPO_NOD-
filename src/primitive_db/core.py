@@ -53,8 +53,9 @@ def list_tables(directory):
     files = os.listdir(directory)
     if files:
         for filename in files:
-            filename = os.path.splitext(filename)[0]
-            print(f"- '{filename}'")
+            if filename != "metadata.json":
+                filename = os.path.splitext(filename)[0]
+                print(f"- '{filename}'")
     else:
         raise ValueError("Ошибка: Таблиц в файле не найдено!")
 
