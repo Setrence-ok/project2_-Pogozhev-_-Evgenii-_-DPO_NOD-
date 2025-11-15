@@ -2,7 +2,7 @@
 import os
 
 from .decorators import confirm_action, handle_db_errors, log_time
-from .utils import save_table_data
+from .utils import save_table_data, METADATA
 
 
 def create_table(metadata, table_name, columns):
@@ -53,7 +53,7 @@ def list_tables(directory):
     files = os.listdir(directory)
     if files:
         for filename in files:
-            if filename != "metadata.json":
+            if filename != METADATA:
                 filename = os.path.splitext(filename)[0]
                 print(f"- '{filename}'")
     else:
@@ -130,7 +130,6 @@ def select(table_data, where_clause=None):
 
         if match:
             filtered_data.append(record)
-            print(f"Итоговый результат: {len(filtered_data)}")
 
     return filtered_data
 

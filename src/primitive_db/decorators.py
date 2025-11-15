@@ -42,10 +42,16 @@ def log_time(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.monotonic()
-        result = func(*args, **kwargs)
-        end_time = time.monotonic()
-        execution_time = end_time - start_time
-        print(f'Функция "{func.__name__}" выполнилась за {execution_time:.6f} секунд')
+        try:
+            result = func(*args, **kwargs)
+            end_time = time.monotonic()
+            execution_time = end_time - start_time
+            print(f'Функция "{func.__name__}" выполнилась за {execution_time:.6f} секунд')
+        except Exception:
+            end_time = time.monotonic()
+            execution_time = end_time - start_time
+            print(f'Функция "{func.__name__}" выполнилась за {execution_time:.6f} секунд')
+            return
         return result
 
     return wrapper

@@ -121,7 +121,7 @@ def run_insert(metadata, args):
 
 def run_select(args, cache):
     global cache_key, all_fields
-    if len(args) < 2 or args[1] != "from":
+    if len(args) < 3 or args[1] != "from":
         print("Ошибка: Неверный формат команды SELECT. Используйте: "
               "select from <таблица> [where <условие>]")
         return
@@ -129,10 +129,14 @@ def run_select(args, cache):
     table_name = args[2]
     where_clause = None
 
-    if "where" in args:
-        where_index = args.index("where")
-        where_condition = " ".join(args[where_index + 1:])
-        where_clause = parse_where_clause(where_condition)
+    try:
+        if "where" in args:
+            where_index = args.index("where")
+            where_condition = " ".join(args[where_index + 1:])
+            where_clause = parse_where_clause(where_condition)
+    except ValueError as ve:
+        print(ve)
+        return
 
     try:
         table_data = load_table_data(table_name)
@@ -143,9 +147,9 @@ def run_select(args, cache):
             result = select(table_data, where_clause)
             return result
 
-        result_data = cache(cache_key, get_selected_data)
-
-        if not result_data:
+        try:
+            result_data = cache(cache_key, get_selected_data)
+        except:
             print("Записи не найдены.")
             return
 
@@ -173,7 +177,7 @@ def run_select(args, cache):
         print(ve)
 
 
-def run_update(args):
+def run_update(args, metadata):
     if len(args) < 5 or args[2] != "set" or "where" not in args:
         print(
             "Ошибка: Неверный формат команды UPDATE. Используйте: update <таблица> set "
@@ -181,6 +185,9 @@ def run_update(args):
         return
 
     table_name = args[1]
+    if table_name not in metadata:
+        print(f"Таблицы {table_name} в базе нет")
+        return
     set_index = args.index("set")
     where_index = args.index("where")
 
@@ -232,7 +239,7 @@ def run_delete(args):
 
 
 def run_info(args):
-    if len(args) < 1:
+    if len(args) < 2:
         print("Ошибка: Укажите имя таблицы. Используйте: info <таблица>")
         return
 
@@ -293,7 +300,7 @@ def run():
             run_select(args, cache)
 
         elif command == "update":
-            run_update(args)
+            run_update(args, metadata)
 
         elif command == "delete":
             run_delete(args)

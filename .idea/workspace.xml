@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="problem with cache">
+    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Solve problem with cache and check ruff">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0-py3-none-any.whl" beforeDir="false" afterPath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0-py3-none-any.whl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0.tar.gz" beforeDir="false" afterPath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0.tar.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/core.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/engine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitive_db/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1762721633726</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Solve problem with cache and check ruff">
+      <created>1763226155955</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1763226155955</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -295,6 +306,7 @@
     <MESSAGE value="Add decorators" />
     <MESSAGE value="Itegration decoraions" />
     <MESSAGE value="problem with cache" />
-    <option name="LAST_COMMIT_MESSAGE" value="problem with cache" />
+    <MESSAGE value="Solve problem with cache and check ruff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solve problem with cache and check ruff" />
   </component>
 </project>
