@@ -121,12 +121,17 @@ def run_insert(metadata, args):
 
 def run_select(args, cache):
     global cache_key, all_fields
+    metadata = load_metadata()
     if len(args) < 3 or args[1] != "from":
         print("Ошибка: Неверный формат команды SELECT. Используйте: "
               "select from <таблица> [where <условие>]")
         return
 
     table_name = args[2]
+    if table_name not in metadata:
+        print(f"Таблицы {table_name} не существует")
+        return
+
     where_clause = None
 
     try:
@@ -140,6 +145,11 @@ def run_select(args, cache):
 
     try:
         table_data = load_table_data(table_name)
+
+        if len(table_data) == 0:
+            print(f"Данные в таблице: {table_name} отсутствуют")
+            return
+
         if table_data:
             cache_key = f"select.{table_name}.{str(where_clause)}"
 
@@ -147,13 +157,7 @@ def run_select(args, cache):
             result = select(table_data, where_clause)
             return result
 
-        try:
-            result_data = cache(cache_key, get_selected_data)
-        except:
-            print("Записи не найдены.")
-            return
-
-        metadata = load_metadata()
+        result_data = cache(cache_key, get_selected_data)
 
         if table_name in metadata:
             table_meta = metadata[table_name]
