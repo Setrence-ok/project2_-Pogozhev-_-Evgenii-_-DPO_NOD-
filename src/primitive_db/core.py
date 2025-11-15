@@ -2,14 +2,13 @@
 import os
 
 from .decorators import confirm_action, handle_db_errors, log_time
-from .utils import save_table_data, METADATA
+from .utils import METADATA, save_table_data
 
 
 def create_table(metadata, table_name, columns):
     TYPES = {'int': 'integer', 'str': 'text', 'bool': 'boolean'}
     FILEPATH = f'data/{table_name}.json'
 
-    # Проверяем существование таблицы
     if table_name in metadata:
         raise ValueError(f"Таблица '{table_name}' уже существует")
 

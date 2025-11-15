@@ -46,11 +46,13 @@ def log_time(func):
             result = func(*args, **kwargs)
             end_time = time.monotonic()
             execution_time = end_time - start_time
-            print(f'Функция "{func.__name__}" выполнилась за {execution_time:.6f} секунд')
+            print(f'Функция "{func.__name__}" выполнилась за '
+                  f'{execution_time:.6f} секунд')
         except Exception:
             end_time = time.monotonic()
             execution_time = end_time - start_time
-            print(f'Функция "{func.__name__}" выполнилась за {execution_time:.6f} секунд')
+            print(f'Функция "{func.__name__}" выполнилась за '
+                  f'{execution_time:.6f} секунд')
             return
         return result
 
