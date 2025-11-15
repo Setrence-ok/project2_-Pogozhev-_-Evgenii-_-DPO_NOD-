@@ -1,12 +1,11 @@
 # src/primitive_db/core.py
 import os
-from .utils import load_table_data, save_table_data, load_metadata
+
+from .decorators import confirm_action, handle_db_errors, log_time
+from .utils import save_table_data, METADATA
 
 
 def create_table(metadata, table_name, columns):
-    """
-    Создает новую таблицу
-    """
     TYPES = {'int': 'integer', 'str': 'text', 'bool': 'boolean'}
     FILEPATH = f'data/{table_name}.json'
 
@@ -17,7 +16,6 @@ def create_table(metadata, table_name, columns):
     if os.path.exists(FILEPATH):
         raise ValueError(f"Файл для таблицы '{table_name}' уже существует")
 
-    # Проверяем столбцы
     table_schema = {"ID": "integer"}  # ID всегда первый столбец
 
     for column in columns:
@@ -27,25 +25,27 @@ def create_table(metadata, table_name, columns):
         column_name, column_type = column
         if column_type not in TYPES:
             raise ValueError(
-                f"Тип '{column_type}' для столбца '{column_name}' не поддерживается. Используйте: int, str, bool")
+                f"Тип '{column_type}' для столбца '{column_name}' не поддерживается. "
+                f"Используйте: int, str, bool")
 
         table_schema[column_name] = TYPES[column_type]
 
-    # Добавляем таблицу в метаданные
     metadata[table_name] = table_schema
 
-    # Создаем пустой файл для данных таблицы
     save_table_data(table_name, [])
 
     return metadata
 
 
+@handle_db_errors
+@confirm_action("удаление таблицы", None)
 def drop_table(metadata, table_name):
     FILEPATH = f'data/{table_name}.json'
     if not os.path.exists(FILEPATH):
         raise ValueError(f"Ошибка: Таблица '{table_name}' не существует")
     del metadata[table_name]
     os.remove(FILEPATH)
+    print(f"Таблица '{table_name}' успешно удалена.")
     return metadata
 
 
@@ -53,45 +53,41 @@ def list_tables(directory):
     files = os.listdir(directory)
     if files:
         for filename in files:
-            if filename != "metadata.json":
+            if filename != METADATA:
                 filename = os.path.splitext(filename)[0]
                 print(f"- '{filename}'")
     else:
         raise ValueError("Ошибка: Таблиц в файле не найдено!")
 
 
+@handle_db_errors
 def insert(metadata, table_name, values):
-    """
-    Вставляет новую запись в таблицу
-    """
-    # Проверяем существование таблицы
     if table_name not in metadata:
         raise ValueError(f"Таблица '{table_name}' не существует")
 
     table_schema = metadata[table_name]
-    # Получаем все столбцы кроме ID
     columns = [col for col in table_schema.keys() if col != "ID"]
 
-    # Проверяем количество значений
     if len(values) != len(columns):
         raise ValueError(
-            f"Неверное количество значений. Ожидается {len(columns)} ({', '.join(columns)}), получено {len(values)}")
+            f"Неверное количество значений. Ожидается {len(columns)} "
+            f"({', '.join(columns)}), получено {len(values)}")
 
-    # Валидируем типы данных
     validated_values = []
     for i, col_name in enumerate(columns):
         expected_type = table_schema[col_name]
         value = values[i]
 
-        # Валидация типов
         if expected_type == "integer":
             try:
                 if isinstance(value, str):
                     value = int(value) if value.isdigit() else value
                 if not isinstance(value, int):
-                    raise ValueError(f"Неверный тип для столбца '{col_name}'. Ожидается integer")
+                    raise ValueError(f"Неверный тип для столбца '{col_name}'. "
+                                     f"Ожидается integer")
             except ValueError:
-                raise ValueError(f"Неверное значение для столбца '{col_name}'. Ожидается целое число")
+                raise ValueError(f"Неверное значение для столбца '{col_name}'. "
+                                 f"Ожидается целое число")
 
         elif expected_type == "boolean":
             if isinstance(value, str):
@@ -100,27 +96,27 @@ def insert(metadata, table_name, values):
                 elif value.lower() == "false":
                     value = False
                 else:
-                    raise ValueError(f"Неверное значение для столбца '{col_name}'. Ожидается true/false")
+                    raise ValueError(f"Неверное значение для столбца '{col_name}'. "
+                                     f"Ожидается true/false")
             elif not isinstance(value, bool):
-                raise ValueError(f"Неверный тип для столбца '{col_name}'. Ожидается boolean")
+                raise ValueError(f"Неверный тип для столбца '{col_name}'. "
+                                 f"Ожидается boolean")
 
         elif expected_type == "text" and not isinstance(value, str):
             value = str(value)
 
         validated_values.append(value)
 
-    # Создаем новую запись с ID на первом месте
-    new_record = {"ID": None}  # ID будет установлен позже
+    new_record = {"ID": None}
     for i, col_name in enumerate(columns):
         new_record[col_name] = validated_values[i]
 
     return new_record
 
 
+@handle_db_errors
+@log_time
 def select(table_data, where_clause=None):
-    """
-    Выбирает записи из таблицы
-    """
     if where_clause is None:
         return table_data
 
@@ -138,10 +134,8 @@ def select(table_data, where_clause=None):
     return filtered_data
 
 
+@handle_db_errors
 def update(table_data, set_clause, where_clause):
-    """
-    Обновляет записи в таблице
-    """
     updated_count = 0
 
     for record in table_data:
@@ -160,10 +154,9 @@ def update(table_data, set_clause, where_clause):
     return table_data, updated_count
 
 
+@handle_db_errors
+@confirm_action("удаление записи", return_=(None, 0))
 def delete(table_data, where_clause):
-    """
-    Удаляет записи из таблицы
-    """
     if where_clause is None:
         return table_data, 0
 
