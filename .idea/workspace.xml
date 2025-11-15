@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="Itegration decoraions">
+    <list default="true" id="15fce5cd-cad3-447a-b71c-2f3c99048390" name="Changes" comment="problem with cache">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0-py3-none-any.whl" beforeDir="false" afterPath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0-py3-none-any.whl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0.tar.gz" beforeDir="false" afterPath="$PROJECT_DIR$/dist/project2_pogozhev_evgenii_dpo_nod-0.1.0.tar.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/core.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/primitive_db/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitive_db/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitive_db/parser.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1762707749642</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="problem with cache">
+      <created>1762721633726</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1762721633726</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,6 +294,7 @@
     <MESSAGE value="Finish second part" />
     <MESSAGE value="Add decorators" />
     <MESSAGE value="Itegration decoraions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Itegration decoraions" />
+    <MESSAGE value="problem with cache" />
+    <option name="LAST_COMMIT_MESSAGE" value="problem with cache" />
   </component>
 </project>

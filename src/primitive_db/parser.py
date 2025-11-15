@@ -13,7 +13,8 @@ def parse_where_clause(where_condition):
 
     # Разделяем по "="
     if "=" not in condition:
-        raise ValueError("Некорректный формат условия WHERE. Используйте: столбец = значение")
+        raise ValueError("Некорректный формат условия WHERE. Используйте: "
+                         "столбец = значение")
 
     parts = condition.split("=", 1)
     column = parts[0].strip()

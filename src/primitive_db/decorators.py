@@ -1,14 +1,10 @@
 # src/deco.py
 
-import time
 import functools
+import time
 
 
 def handle_db_errors(func):
-    """
-    Декоратор для обработки ошибок базы данных
-    """
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -26,14 +22,11 @@ def handle_db_errors(func):
 
 
 def confirm_action(action_name, return_):
-    """
-    Декоратор для подтверждения опасных операций
-    """
-
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            response = input(f'Вы уверены, что хотите выполнить "{action_name}"? [y/n]: ')
+            response = input(f'Вы уверены, что хотите выполнить "{action_name}"? '
+                             f'[y/n]: ')
             if response.lower() != 'y':
                 print("Операция отменена.")
                 return return_
@@ -46,10 +39,6 @@ def confirm_action(action_name, return_):
 
 
 def log_time(func):
-    """
-    Декоратор для замера времени выполнения функции
-    """
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.monotonic()
@@ -63,9 +52,6 @@ def log_time(func):
 
 
 def create_cacher():
-    """
-    Фабрика функций для кэширования
-    """
     cache = {}
 
     def cache_result(key, value_func):

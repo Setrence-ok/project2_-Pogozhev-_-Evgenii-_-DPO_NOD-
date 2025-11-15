@@ -1,7 +1,8 @@
 # src/primitive_db/core.py
 import os
-from .utils import load_table_data, save_table_data, load_metadata
-from .decorators import handle_db_errors, log_time, confirm_action
+
+from .decorators import confirm_action, handle_db_errors, log_time
+from .utils import save_table_data
 
 
 def create_table(metadata, table_name, columns):
@@ -24,7 +25,8 @@ def create_table(metadata, table_name, columns):
         column_name, column_type = column
         if column_type not in TYPES:
             raise ValueError(
-                f"Тип '{column_type}' для столбца '{column_name}' не поддерживается. Используйте: int, str, bool")
+                f"Тип '{column_type}' для столбца '{column_name}' не поддерживается. "
+                f"Используйте: int, str, bool")
 
         table_schema[column_name] = TYPES[column_type]
 
@@ -68,7 +70,8 @@ def insert(metadata, table_name, values):
 
     if len(values) != len(columns):
         raise ValueError(
-            f"Неверное количество значений. Ожидается {len(columns)} ({', '.join(columns)}), получено {len(values)}")
+            f"Неверное количество значений. Ожидается {len(columns)} "
+            f"({', '.join(columns)}), получено {len(values)}")
 
     validated_values = []
     for i, col_name in enumerate(columns):
@@ -80,9 +83,11 @@ def insert(metadata, table_name, values):
                 if isinstance(value, str):
                     value = int(value) if value.isdigit() else value
                 if not isinstance(value, int):
-                    raise ValueError(f"Неверный тип для столбца '{col_name}'. Ожидается integer")
+                    raise ValueError(f"Неверный тип для столбца '{col_name}'. "
+                                     f"Ожидается integer")
             except ValueError:
-                raise ValueError(f"Неверное значение для столбца '{col_name}'. Ожидается целое число")
+                raise ValueError(f"Неверное значение для столбца '{col_name}'. "
+                                 f"Ожидается целое число")
 
         elif expected_type == "boolean":
             if isinstance(value, str):
@@ -91,9 +96,11 @@ def insert(metadata, table_name, values):
                 elif value.lower() == "false":
                     value = False
                 else:
-                    raise ValueError(f"Неверное значение для столбца '{col_name}'. Ожидается true/false")
+                    raise ValueError(f"Неверное значение для столбца '{col_name}'. "
+                                     f"Ожидается true/false")
             elif not isinstance(value, bool):
-                raise ValueError(f"Неверный тип для столбца '{col_name}'. Ожидается boolean")
+                raise ValueError(f"Неверный тип для столбца '{col_name}'. "
+                                 f"Ожидается boolean")
 
         elif expected_type == "text" and not isinstance(value, str):
             value = str(value)
@@ -123,6 +130,7 @@ def select(table_data, where_clause=None):
 
         if match:
             filtered_data.append(record)
+            print(f"Итоговый результат: {len(filtered_data)}")
 
     return filtered_data
 

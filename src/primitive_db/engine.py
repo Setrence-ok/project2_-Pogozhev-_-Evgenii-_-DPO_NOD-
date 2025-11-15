@@ -1,26 +1,29 @@
 # src/primitive_db/engine.py
 import shlex
-from .decorators import create_cacher, log_time
-from .core import create_table, drop_table, list_tables, insert, delete, select, update
-from .utils import load_metadata, save_metadata, load_table_data, save_table_data
-from .parser import parse_where_clause, parse_set_clause, parse_values
+
 from prettytable import PrettyTable
+
+from .core import create_table, delete, drop_table, insert, list_tables, select, update
+from .decorators import create_cacher, log_time
+from .parser import parse_set_clause, parse_values, parse_where_clause
+from .utils import load_metadata, load_table_data, save_metadata, save_table_data
 
 
 def print_help():
-    """Prints the help message for the current mode."""
-
     print("\n***Процесс работы с таблицей***")
     print("Функции:")
     print("<command> create_table <имя_таблицы> <столбец1:тип> .. - создать таблицу")
     print("<command> list_tables - показать список всех таблиц")
     print("<command> drop_table <имя_таблицы> - удалить таблицу")
-    print("<command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) - создать запись.")
-    print("<command> select from <имя_таблицы> where <столбец> = <значение> - прочитать записи по условию.")
+    print("<command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) "
+          "- создать запись.")
+    print("<command> select from <имя_таблицы> where <столбец> = <значение> - "
+          "прочитать записи по условию.")
     print("<command> select from <имя_таблицы> - прочитать все записи.")
     print("<command> update <имя_таблицы> set <столбец1> = <новое_значение1> "
           "where <столбец_условия> = <значение_условия> - обновить запись.")
-    print("<command> delete from <имя_таблицы> where <столбец> = <значение> - удалить запись.")
+    print("<command> delete from <имя_таблицы> where <столбец> = <значение> - "
+          "удалить запись.")
     print("<command> info <имя_таблицы> - вывести информацию о таблице.")
 
     print("\nОбщие команды:")
@@ -47,7 +50,8 @@ def run_create_table(metadata, args):
         updated_metadata = create_table(metadata, table_name, columns)
         save_metadata(updated_metadata)
         column_descriptions = ', '.join([f"{col[0]}:{col[1]}" for col in columns])
-        print(f"Таблица '{table_name}' успешно создана со столбцами: {column_descriptions}")
+        print(f"Таблица '{table_name}' успешно создана со столбцами: "
+              f"{column_descriptions}")
     except ValueError as ve:
         print(ve)
 
@@ -78,7 +82,8 @@ def run_drop_table(metadata, args):
 @log_time
 def run_insert(metadata, args):
     if len(args) < 4 or args[1] != "into" or args[3] != "values":
-        print("Ошибка: Неверный формат команды INSERT. Используйте: insert into <таблица> values (<значения>)")
+        print("Ошибка: Неверный формат команды INSERT. Используйте: "
+              "insert into <таблица> values (<значения>)")
         return
 
     table_name = args[2]
@@ -107,15 +112,18 @@ def run_insert(metadata, args):
         table_data.append(new_record)
         save_table_data(table_name, table_data)
 
-        print(f'Запись с ID={new_record["ID"]} успешно добавлена в таблицу "{table_name}".')
+        print(f'Запись с ID={new_record["ID"]} успешно добавлена в '
+              f'таблицу "{table_name}".')
 
     except ValueError as ve:
         print(ve)
 
 
 def run_select(args, cache):
+    global cache_key, all_fields
     if len(args) < 2 or args[1] != "from":
-        print("Ошибка: Неверный формат команды SELECT. Используйте: select from <таблица> [where <условие>]")
+        print("Ошибка: Неверный формат команды SELECT. Используйте: "
+              "select from <таблица> [where <условие>]")
         return
 
     table_name = args[2]
@@ -128,10 +136,13 @@ def run_select(args, cache):
 
     try:
         table_data = load_table_data(table_name)
-        cache_key = f"select.{table_name}.{str(where_clause)}"
+        if table_data:
+            cache_key = f"select.{table_name}.{str(where_clause)}"
 
         def get_selected_data():
-            return select(table_data, where_clause)
+            result = select(table_data, where_clause)
+            return result
+
         result_data = cache(cache_key, get_selected_data)
 
         if not result_data:
@@ -139,10 +150,13 @@ def run_select(args, cache):
             return
 
         metadata = load_metadata()
+
         if table_name in metadata:
-            all_fields = list(metadata[table_name].get('columns', []))
+            table_meta = metadata[table_name]
+            all_fields = list(table_meta.keys())
         else:
-            all_fields = list(result_data[0].keys())
+            if result_data:
+                all_fields = list(result_data[0].keys())
             if "ID" in all_fields:
                 all_fields.remove("ID")
                 all_fields = ["ID"] + all_fields
@@ -153,7 +167,6 @@ def run_select(args, cache):
         for record in result_data:
             row = [record.get(field, "") for field in all_fields]
             table.add_row(row)
-
         print(table)
 
     except ValueError as ve:
@@ -163,7 +176,8 @@ def run_select(args, cache):
 def run_update(args):
     if len(args) < 5 or args[2] != "set" or "where" not in args:
         print(
-            "Ошибка: Неверный формат команды UPDATE. Используйте: update <таблица> set <присваивания> where <условие>")
+            "Ошибка: Неверный формат команды UPDATE. Используйте: update <таблица> set "
+            "<присваивания> where <условие>")
         return
 
     table_name = args[1]
@@ -183,7 +197,8 @@ def run_update(args):
 
         save_table_data(table_name, updated_data)
 
-        print(f"Запись(и) в таблице '{table_name}' успешно обновлена(ы). Обновлено записей: {updated_count}")
+        print(f"Запись(и) в таблице '{table_name}' успешно обновлена(ы). "
+              f"Обновлено записей: {updated_count}")
 
     except ValueError as ve:
         print(ve)
@@ -191,7 +206,8 @@ def run_update(args):
 
 def run_delete(args):
     if len(args) < 4 or args[1] != "from" or args[3] != "where":
-        print("Ошибка: Неверный формат команды DELETE. Используйте: delete from <таблица> where <условие>")
+        print("Ошибка: Неверный формат команды DELETE. Используйте: "
+              "delete from <таблица> where <условие>")
         return
 
     table_name = args[2]
@@ -208,7 +224,8 @@ def run_delete(args):
         new_data, deleted_count = result
         if deleted_count > 0:
             save_table_data(table_name, new_data)
-            print(f"Запись(и) успешно удалена(ы) из таблицы '{table_name}'. Удалено записей: {deleted_count}")
+            print(f"Запись(и) успешно удалена(ы) из таблицы '{table_name}'. "
+                  f"Удалено записей: {deleted_count}")
 
     except ValueError as ve:
         print(ve)
